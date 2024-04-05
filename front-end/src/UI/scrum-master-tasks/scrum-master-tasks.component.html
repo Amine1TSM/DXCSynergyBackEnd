@@ -1,0 +1,157 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-brand ms-3" href="#">
+      <img src="assets/images/DxcTech.png" alt="DXC Image" style="max-height: 50px; max-width: 250px;">
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+
+        <a routerLink="/scrumMaster" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 65px;">
+            <i class="fs-5 bi-person-plus"></i><span class="ms-1 d-none d-sm-inline">Gérer les Projets</span>
+          </a>
+    
+          <a routerLink="/scrumMasterTasks" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 60px;">
+            <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Gérer les taches</span>
+          </a>
+  
+        <a routerLink="#" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 70px;">
+          <i class="fs-5 bi-journal-text"></i><span class="ms-1 d-none d-sm-inline">Projets</span>
+        </a>
+        <a routerLink="#"routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+          <i class="fs-5 bi-chat"></i><span class="ms-1 d-none d-sm-inline">Messagerie</span>
+        </a>
+        <a routerLink="#" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+          <i class="fs-5 bi-headset"></i><span class="ms-1 d-none d-sm-inline"> ChatBot</span>
+        </a>
+        <a routerLink="#" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+          <i class="fs-5 bi-bell"></i><span class="ms-1 d-none d-sm-inline">Notifications</span>
+        </a>
+        <button class="nav-link text-truncate">
+          <i class="fs-5 bi-box-arrow-left"></i><span class="ms-1 d-none d-sm-inline">Se déconnecter</span>
+        </button>
+      </div>
+    </div>
+</nav>
+<div class="container mt-3">
+    <div>
+        <p class="lead">
+            Projects / <strong>{{workingProject?.title}}</strong>
+        </p>
+    </div>
+    <div>
+        <form class="d-flex">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+            </div>
+            <input #searchInput class="form-control flex-grow-1" type="search" placeholder="Membres de l'équipe" aria-label="Search" style="max-width: 200px;">
+            <div class="members">
+                <span class="lead">Membres:</span>
+                <div class="member-circle">AI</div>
+                <div class="member-circle">SH</div>
+                <div class="member-circle">YK</div>
+                <div class="member-circle">SI</div>
+                <div class="member-circle">OI</div>
+              </div>
+            </div>
+        </form>
+        
+      </div>
+</div>
+
+
+<div class="container mt-4">
+  <div class="card" *ngFor="let sprint of sprints">
+    <div class="card-body">
+      <div class="table-info">
+        <p class="h5 mb-3">{{sprint.title}}: <small class="text-muted"><small class="text-muted">Le {{ formatDateToFrench(sprint.debutDate) }}</small></small></p>
+      </div>
+      <!-- Static content inside the table -->
+      <table class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+          <tr>
+            <th><p class="lead">Tache</p></th>
+            <th><p class="lead">état</p></th>
+            <th><p class="lead">Responsable</p></th>
+            <th><p class="lead">Terminer</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of sprint.tasks">
+            <td>
+              <p class="fw-normal mb-1">{{ task.description }}</p>
+            </td>
+            <td>
+              <span class="badge badge-success rounded-pill d-inline">{{ task.taskStatus }}</span>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+                <div class="ms-3">
+                  <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option selected>{{ task.userEmail }}</option>
+                    <option *ngFor="let member of projectMembers" [ngValue]="member.email">{{ member.email }}</option>
+                  </select>
+
+                </div>
+              </div>
+            </td>
+            <td>
+              <a type="button"><i class="bi bi-check-circle"></i></a>               
+            </td>
+          </tr>
+          <!-- More dynamic table rows based on tasks array -->
+        </tbody>
+      </table>
+      <!-- End of static content -->
+    </div>
+  </div>
+</div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+      
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            // Remove active class from other links
+            navLinks.forEach(otherLink => {
+              if (otherLink !== link) {
+                otherLink.classList.remove('active');
+              }
+            });
+      
+            // Add active class to clicked link
+            link.classList.add('active');
+          });
+        });
+      </script>
+      

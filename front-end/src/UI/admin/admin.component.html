@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="navbar-brand ms-3" href="#">
+    <img src="assets/images/DxcTech.png" alt="DXC Image" style="max-height: 50px; max-width: 250px;">
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+
+      <a routerLink="/admin/manageUsers" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 40px;">
+        <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Gérer Collaborateurs</span>
+      </a>
+
+      <a routerLink="/admin/addUsers" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 60px;">
+        <i class="fs-5 bi-person-plus"></i><span class="ms-1 d-none d-sm-inline">Ajouter Collaborateur</span>
+      </a>
+
+      <a routerLink="/projects" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 70px;">
+        <i class="fs-5 bi-journal-text"></i><span class="ms-1 d-none d-sm-inline">Projets</span>
+      </a>
+      <a routerLink="/messaging" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+        <i class="fs-5 bi-chat"></i><span class="ms-1 d-none d-sm-inline">Messagerie</span>
+      </a>
+      <a routerLink="/chatbot" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+        <i class="fs-5 bi-headset"></i><span class="ms-1 d-none d-sm-inline">ChatBot</span>
+      </a>
+      <a routerLink="/notifications" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+        <i class="fs-5 bi-bell"></i><span class="ms-1 d-none d-sm-inline">Notifications</span>
+      </a>
+      <button class="nav-link text-truncate"(click)="handleLogout()">
+        <i class="fs-5 bi-box-arrow-left"></i><span class="ms-1 d-none d-sm-inline">Se déconnecter</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<script>
+  const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Remove active class from other links
+      navLinks.forEach(otherLink => {
+        if (otherLink !== link) {
+          otherLink.classList.remove('active');
+        }
+      });
+
+      // Add active class to clicked link
+      link.classList.add('active');
+    });
+  });
+</script>
+

@@ -1,0 +1,40 @@
+.short-input {
+    width: 350px; /* Adjust the width value as needed */
+  }
+
+  .center-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    margin-bottom: 20px; /* Adjust the margin value as needed */
+  }
+
+  .logo-image {
+    width: 270px; /* Adjust the width value as needed */
+    height: auto; /* Preserve the aspect ratio */
+  }
+
+  .custom-login-button {
+    background-color: #8854d0;
+    color: white;
+    border-color: #8854d0;
+    width: 200px; /* Adjust the width value as needed */
+    position: relative; /* Add position:relative to the button container */
+  }
+
+  .custom-login-button i {
+    font-size: 24px; /* Adjust the font size value as needed */
+    position: absolute; /* Position the icon absolutely */
+    right: 10px; /* Adjust the right value as needed */
+    top: 50%; /* Position the icon vertically */
+    transform: translateY(-50%); /* Center the icon vertically */
+  }
+
+  .error-text {
+    color: red;
+    margin-top: 10px; /* Adjust the margin value as needed */
+    text-align: center;
+  }

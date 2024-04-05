@@ -1,0 +1,233 @@
+<section class="gradient-custom">
+  <div class="container py-5" >
+    <div class="row justify-content-center align-items-start">
+      <div class="col-12 col-lg-9 col-xl-7" >
+        <div class="card shadow-2-strong card-registration" style="border-radius: 25px; background-color: #f5f6fa;">
+          <div class="card-body p-3 p-md-4">
+
+            <h1 class="mb-3" style="color: #686de0; text-align: center; margin-bottom: 80px;">inscrire un nouvel utilisateur</h1>
+
+            <form [formGroup]="formLogin" (ngSubmit)="openAddModal()">
+
+              <div class="row" style="margin-top: 50px;">
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="firstName">First Name</label>
+                    <input type="text" id="firstName" formControlName="firstName" class="form-control" [ngClass]="{'error-border': formLogin.get('firstName')?.invalid && formLogin.get('firstName')?.touched}" />
+                    
+                    <span *ngIf="formLogin.get('firstName')?.hasError('required') && formLogin.get('firstName')?.touched" style="color: red;">     
+                      Le prénom est requis
+                    </span>
+                    <span *ngIf="formLogin.get('firstName')?.hasError('minlength') && formLogin.get('firstName')?.touched" style="color: red;">
+                      Le prénom doit comporter au moins 2 caractères!
+                    </span>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="lastName">Last Name</label>
+                    <input type="text" id="lastName" formControlName="lastName" class="form-control" [ngClass]="{'error-border': formLogin.get('lastName')?.invalid && formLogin.get('lastName')?.touched}" />
+                    
+                    <span *ngIf="formLogin.get('lastName')?.hasError('required') && formLogin.get('lastName')?.touched" style="color: red;">     
+                      Le nom est requis
+                    </span>
+                    <span *ngIf="formLogin.get('lastName')?.hasError('minlength') && formLogin.get('lastName')?.touched" style="color: red;">
+                      Le nom doit comporter au moins 2 caractères!
+                    </span>
+                    
+                  </div>
+
+                </div>
+              </div>
+
+
+
+              
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="emailAddress">Email</label>
+                    <input type="email" id="emailAddress" formControlName="email" class="form-control" [ngClass]="{'error-border': formLogin.get('email')?.invalid && formLogin.get('email')?.touched}" />
+                    
+                    <span class="text-danger" *ngIf="formLogin.get('email')?.touched && formLogin.get('email')?.errors">
+                      Email is not valid
+                    </span>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" formControlName="phone" class="form-control form-control-lg" [ngClass]="{'error-border': formLogin.get('phone')?.invalid && formLogin.get('phone')?.touched}" />
+                    <span class="text-danger" *ngIf="formLogin.get('phone')?.touched && formLogin.get('phone')?.errors?.['pattern']">
+                      Le numéro de téléphone n'est pas valide
+                    </span>
+                  </div>
+                  
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" formControlName="password" class="form-control" [ngClass]="{'error-border': formLogin.get('password')?.invalid && formLogin.get('password')?.touched}" />
+                    
+                    <span *ngIf="formLogin.get('password')?.hasError('required') && formLogin.get('password')?.touched" style="color: red;">     
+                      Le mot de passe est requis!
+                    </span>
+                    <span *ngIf="formLogin.get('password')?.hasError('minlength') && formLogin.get('password')?.touched" style="color: red;">
+                      Le mot de passe doit avoir au moins 8 caractères!
+                    </span>
+                  </div>
+                  
+
+                  
+            
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" [ngClass]="{'error-border': formLogin.get('confirmPassword')?.invalid && formLogin.get('confirmPassword')?.touched}" />
+                    
+                    <span class="text-danger" *ngIf="formLogin.hasError('passwordMismatch') && formLogin.get('confirmPassword')?.touched">
+                      Passwords do not match.
+                    </span>
+                    <span class="text-danger" *ngIf="formLogin.get('confirmPassword')?.hasError('required') && formLogin.get('confirmPassword')?.touched">
+                      Confirm Password is required.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-2 pt-2 d-flex justify-content-center">
+                <button class="btn btn-primary btn-lg" type="submit" [disabled]="formLogin.invalid" data-bs-toggle="modal" data-bs-target="#addModal" style="background-color: #6c5ce7; border-color: #6c5ce7;" onmouseover="this.style.backgroundColor='#4a1d9b';this.style.borderColor='#4a1d9b';" onmouseout="this.style.backgroundColor='#5f27cd';this.style.borderColor='#5f27cd';">
+                  Submit
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-9 col-lg-10">
+          <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+            <img src="assets/images/DXCblack.png" alt="Company Logo" width="70" height="30">
+          </a>
+          <span class="mb-3 mb-md-0 text-body-secondary">© 2024 DXC Synergy Team, Inc</span>
+        </div>
+  
+        <div class="col-md-3 col-lg-2">
+          <ul class="nav justify-content-end">
+            <li class="nav-item ms-3"><a class="text-body-secondary" href="https://www.instagram.com/dxctechnology/" target="_blank"><i class="bi bi-instagram"></i></a></li>
+            <li class="nav-item ms-3"><a class="text-body-secondary" href="https://www.facebook.com/DXCMaroc" target="_blank"><i class="bi bi-facebook"></i></a></li>
+            <li class="nav-item ms-3"><a class="text-body-secondary" href="https://twitter.com/DXCTechnology/" target="_blank"><i class="bi bi-twitter-x"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</section>
+
+<!--Adding Modal-->
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" [formGroup]="formLogin" (ngSubmit)="handleAddUser()">
+      <div class="modal-header custom-header">
+        <h5 class="modal-title text-white" id="backDropModalTitle"><i class="bi bi-plus-circle"></i>  Ajouter un nouvel utilisateur</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-people"></i></span>
+          <select class="form-select" formControlName="profil" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="profil">
+            <option value="" selected disabled hidden>Choisir le rôle</option>
+            <option value="MANAGER">Manager</option>
+            <option value="COLLABORATOR">Collaborateur</option>
+            <option value="TECH_LEAD">Chef de projet</option>
+            <option value="SCRUM_MASTER">Chef d'équipe</option>
+          </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-cake"></i></span>
+          <input type="date" formControlName="birthday" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Saisir la date de naissance" />
+        </div>
+        
+        
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-people"></i></span>
+          <select class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" formControlName="teamAcronyme">
+            <option value="" disabled selected>Choisir l'équipe</option>
+            <option value="TM1">Team1</option>
+            <option value="TM2">Team2</option>
+            <option value="TM3">Team3</option>
+          </select>
+        </div>
+        
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-arrow-through-heart"></i></span>
+          <select class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" formControlName="familyStatus">
+            <option value="" disabled selected>Choisir la situation familiale</option>
+            <option value="SINGLE">Célibataire</option>
+            <option value="MARRIED">Marié</option>
+            <option value="DIVORCED">Divorcé</option>
+            <option value="WIDOWED">VEUVE</option>
+          </select>
+        </div>
+        
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-briefcase"></i></span>
+          <select class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" formControlName="workStatus">
+            <option value="" disabled selected>Choisir le work status</option>
+            <option value="OFFICE">Bureau</option>
+            <option value="HOLIDAY">Vacances</option>
+            <option value="SICK">Malade</option>
+            <option value="MISSION">Mission</option>
+            <option value="REMOTE">À distance</option>
+          </select>
+        </div>
+        
+
+
+
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+          <textarea class="form-control" formControlName="description" aria-label="With textarea" placeholder="Saisir une description"></textarea>
+        </div>
+        
+
+
+        
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #6c5ce7; border-color: #6c5ce7; transition: background-color 0.3s, border-color 0.3s;" onmouseover="this.style.backgroundColor='#5a4bd8'; this.style.borderColor='#5a4bd8';" onmouseout="this.style.backgroundColor='#6c5ce7'; this.style.borderColor='#6c5ce7';">
+          Ajouter
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

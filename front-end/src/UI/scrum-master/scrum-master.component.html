@@ -1,0 +1,170 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="navbar-brand ms-3" href="#">
+    <img src="assets/images/DxcTech.png" alt="DXC Image" style="max-height: 50px; max-width: 250px;">
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+
+      <a routerLink="/scrumMaster" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 65px;">
+        <i class="fs-5 bi-person-plus"></i><span class="ms-1 d-none d-sm-inline">Gérer les Projets</span>
+      </a>
+
+      <a routerLink="/scrumMasterTasks" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 60px;">
+        <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Gérer les taches</span>
+      </a>
+
+    
+      <a routerLink="#" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 70px;">
+        <i class="fs-5 bi-journal-text"></i><span class="ms-1 d-none d-sm-inline">Projets</span>
+      </a>
+      <a routerLink="#"routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+        <i class="fs-5 bi-chat"></i><span class="ms-1 d-none d-sm-inline">Messagerie</span>
+      </a>
+      <a routerLink="#" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+        <i class="fs-5 bi-headset"></i><span class="ms-1 d-none d-sm-inline"> ChatBot</span>
+      </a>
+      <a routerLink="#" routerLinkActive="active" class="nav-link text-truncate" style="margin-right: 50px;">
+        <i class="fs-5 bi-bell"></i><span class="ms-1 d-none d-sm-inline">Notifications</span>
+      </a>
+      <button class="nav-link text-truncate">
+        <i class="fs-5 bi-box-arrow-left"></i><span class="ms-1 d-none d-sm-inline">Se déconnecter</span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="container mt-5 mb-3">
+  <div class="row row-cols-1 row-cols-md-2 g-5">
+    <div class="col" *ngFor="let project of projects">
+      <div class="card p-3">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-row align-items-center">
+            <div class="icon"><i class="bi bi-clipboard2"></i></div>
+            <div class="ms-2 c-details">
+              <strong><h4 class="mb-0" style="color: #6c5ce7;">{{ project.title }}</h4></strong>
+              <span>{{ getDaysAgo(project.debutDate.toString()) }}</span>
+            </div>
+          </div>
+          <div class="badge">
+            <span *ngIf="project.reelEndDate; else inProgressBadge" class="finie">Finie</span>
+            <ng-template #inProgressBadge>
+              <span class="enCours">En cours</span>
+            </ng-template>
+          </div>
+        </div>
+        <div class="mt-4">
+          <span class="d-block mb-5">{{ project.description }}</span>
+        </div>
+        <div class="team-acronyms">
+          <button *ngFor="let acronym of project.teamAcronyms" class="team-acronym-button" style="background-color: #6c5ce7;" 
+            data-bs-toggle="modal" data-bs-target="#TeamModal" (click)="openSearchModal(acronym)">
+            {{ acronym }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="modal fade" id="TeamModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header custom-header">
+          <h5 class="modal-title text-white" id="backDropModalTitle"><i class="bi bi-people"></i> Membres de l'équipe {{currentTeam}}</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Team items -->
+          <div class="row text-center">
+            <div class="col-xl-4 col-md-6 mb-5" *ngFor="let user of teamUsers?.userResponseDTOS">
+                <div class="bg-white rounded shadow-sm p-3">
+                    <div class="logo-container">
+                        <span class="initials">{{ getInitials(user.firstName, user.lastName) }}</span>
+                    </div>
+                    <h5 class="mb-0">{{ user.firstName }} {{ user.lastName }}</h5>
+                    <span class="small text-uppercase text-muted">{{ user.jobTitle }}</span>
+                    <ul class="social mb-0 list-inline mt-3">
+                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+          </div><!-- End -->
+  
+          <div class="pagination-container" style="display: flex; justify-content: center;">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-end">
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                  <button class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </button>
+                </li>
+          
+                <ng-container *ngFor="let pageNumber of getPageNumbers(teamUsers?.totalPages)">
+                  <li class="page-item" [class.active]="pageNumber === currentPage">
+                    <button class="page-link" (click)="changePage(pageNumber)"
+                      [style.background-color]="pageNumber === currentPage ? '#a29bfe' : ''"
+                      [style.border-color]="pageNumber === currentPage ? '#a29bfe' : ''">
+                      {{ pageNumber + 1 }}
+                    </button>
+                  </li>
+                </ng-container>
+          
+                <li class="page-item" [class.disabled]="currentPage >= teamUsers?.totalPages - 1">
+                  <button class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+<script>
+  const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Remove active class from other links
+      navLinks.forEach(otherLink => {
+        if (otherLink !== link) {
+          otherLink.classList.remove('active');
+        }
+      });
+
+      // Add active class to clicked link
+      link.classList.add('active');
+    });
+  });
+</script>
+

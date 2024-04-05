@@ -1,0 +1,282 @@
+
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 148px; margin-left: 5px; margin-right: 5px;">
+  <form class="d-flex">
+    <div class="input-group">
+      <input #searchInput class="form-control flex-grow-1 me-1" type="search" placeholder="Search" aria-label="Search" style="max-width: 200px;" name="keyword" (input)="searchUsers(searchInput.value)">
+      <button class="btn" type="submit" style="background-color: #8c7ae6;"><i class="bi bi-search"></i></button>
+    </div>
+  </form>
+</div>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Prénom</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Email</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Équipe</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usersPage?.userResponseDTOS">
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>(+212) {{ user.mobile }}</td>
+        <td>{{ user.teamName }}</td>
+        <td>
+          <button class="btn btn-danger btn-hover-darken" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash" (click)="setSelectedUser(user.email)"></i></button>
+          <button class="btn btn-primary btn-hover-darken"><i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#modifyModal" (click)="openSearchModal(user)"></i></button>
+          <button type="button" class="btn btn-primary btn-hover-darken" data-bs-toggle="modal" data-bs-target="#backDropModal" (click)="openSearchModal(user)" style="background-color: #9c88ff; border-color: #9c88ff;">
+            <i class="bi bi-search"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination-container" style="display: flex; justify-content: center;">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-end">
+        <li class="page-item" [class.disabled]="usersPage?.currentPage === 0">
+          <button class="page-link" (click)="changePage(usersPage?.currentPage - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+  
+        <ng-container *ngFor="let pageNumber of getPageNumbers(usersPage?.totalPages)">
+          <li class="page-item" [class.active]="pageNumber === usersPage?.currentPage">
+            <button class="page-link" (click)="changePage(pageNumber)" [style.background-color]="pageNumber === usersPage?.currentPage ? '#a29bfe' : ''" [style.border-color]="pageNumber === usersPage?.currentPage ? '#a29bfe' : ''">{{ pageNumber + 1 }}</button>
+          </li>
+        </ng-container>
+  
+        <li class="page-item" [class.disabled]="usersPage?.currentPage >= usersPage?.totalPages - 1">
+          <button class="page-link" (click)="changePage(usersPage?.currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+<footer class="footer">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-9 col-lg-10">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+          <img src="assets/images/DXCblack.png" alt="Company Logo" width="70" height="30">
+        </a>
+        <span class="mb-3 mb-md-0 text-body-secondary">© 2024 DXC Synergy Team, Inc</span>
+      </div>
+
+      <div class="col-md-3 col-lg-2">
+        <ul class="nav justify-content-end">
+          <li class="nav-item ms-3"><a class="text-body-secondary" href="https://www.instagram.com/dxctechnology/" target="_blank"><i class="bi bi-instagram"></i></a></li>
+          <li class="nav-item ms-3"><a class="text-body-secondary" href="https://www.facebook.com/DXCMaroc" target="_blank"><i class="bi bi-facebook"></i></a></li>
+          <li class="nav-item ms-3"><a class="text-body-secondary" href="https://twitter.com/DXCTechnology/" target="_blank"><i class="bi bi-twitter-x"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="modal fade" id="backDropModal" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content">
+      <div class="modal-header custom-header">
+        <h5 class="modal-title text-white" id="backDropModalTitle"><i class="bi bi-info-circle text-white"></i> Plus d'informations</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col" >
+            <strong><label for="nameBackdrop" class="form-label"><i class="bi bi-cake"></i> Birthday:</label></strong>
+            <span style="margin-left: 10px;">{{ selectedUser?.birthDay | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <strong><label for="emailBackdrop" class="form-label"><i class="bi bi-arrow-through-heart"></i> Situation Familiale:</label></strong>
+            <span style="margin-left: 10px;">
+              <ng-container [ngSwitch]="selectedUser?.familyStatus">
+                <span *ngSwitchCase="'SINGLE'">Célibataire</span>
+                <span *ngSwitchCase="'MARRIED'">Marié(e)</span>
+                <span *ngSwitchCase="'DIVORCED'">Divorcé(e)</span>
+                <span *ngSwitchCase="'WIDOWED'">Veuve</span>
+                <span *ngSwitchDefault>{{ selectedUser?.familyStatus }}</span>
+              </ng-container>
+            </span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <strong><label for="emailBackdrop" class="form-label"><i class="bi bi-briefcase"></i> Work Status:</label></strong>
+            <span style="margin-left: 10px;">
+              <ng-container [ngSwitch]="selectedUser?.workStatus">
+                <span *ngSwitchCase="'OFFICE'">Bureau</span>
+                <span *ngSwitchCase="'HOLIDAY'">Congé</span>
+                <span *ngSwitchCase="'SICK'">Malade</span>
+                <span *ngSwitchCase="'MISSION'">Mission</span>
+                <span *ngSwitchCase="'REMOTE'">À distance</span>
+                <span *ngSwitchDefault>{{ selectedUser?.workStatus }}</span>
+              </ng-container>
+            </span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <strong><label for="emailBackdrop" class="form-label"><i class="bi bi-card-text"></i> Description:</label></strong>
+            <span style="margin-left: 10px;">{{ selectedUser?.description }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <i class="bi bi-exclamation-circle custom-delete-icon"></i>
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="font-size: larger;">
+        Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="close-confirm-button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" id="delete-confirm-button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-target="#successModal" (click)="deleteUser(selectedUser)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modify User Modal-->
+<!-- Button trigger modal -->
+
+
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" [formGroup]="formLogin" (ngSubmit)="handleModify()">
+      <div class="modal-header custom-header">
+        <h5 class="modal-title text-white" id="backDropModalTitle"><i class="bi bi-gear"></i>  Modifier l'utilisateur</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" aria-label="Default select example" id="inputGroup-sizing-sm">
+            <i class="bi bi-person-gear"></i>
+          </span>
+          <div class="form-control" *ngIf="selectedUser?.profils.includes('MANAGER')">Manager</div>
+          <div class="form-control" *ngIf="!selectedUser?.profils.includes('MANAGER') && selectedUser?.profils.includes('TECH_LEAD')">Chef de projet</div>
+          <div class="form-control" *ngIf="!selectedUser?.profils.includes('MANAGER') && !selectedUser?.profils.includes('TECH_LEAD') && selectedUser?.profils.includes('SCRUM_MASTER')">Chef d'équipe</div>
+          <div class="form-control" *ngIf="!selectedUser?.profils.includes('MANAGER') && !selectedUser?.profils.includes('TECH_LEAD') && !selectedUser?.profils.includes('SCRUM_MASTER') && selectedUser?.profils.includes('COLLABORATOR')">Collaborateur</div>
+          <div class="form-control" *ngIf="!selectedUser?.profils.includes('MANAGER') && !selectedUser?.profils.includes('TECH_LEAD') && !selectedUser?.profils.includes('SCRUM_MASTER') && !selectedUser?.profils.includes('COLLABORATOR')">{{selectedUser?.profils}}</div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"> <i class="bi bi-telephone"></i></span>
+          <input type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" class="form-control" placeholder="(+212)" formControlName="phone" value="{{selectedUser?.mobile }}">
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-people"></i></span>
+          <select class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" class="form-control" formControlName="teamAcronyme" value="{{ selectedUser?.teamAcronyme }}" name="teamAcronyme">
+            <option value="TM1">Team1</option>
+            <option value="TM2">Team2</option>
+            <option value="TM3">Team3</option>
+          </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-arrow-through-heart"></i></span>
+          <select class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" class="form-control" formControlName="familyStatus" value="{{selectedUser?.familyStatus }}" name="familyStatus">
+            <option value="SINGLE" selected>Célibataire</option>
+            <option value="MARRIED">Marié</option>
+            <option value="DIVORCED">Divorcé</option>
+            <option value="WIDOWED">VEUVE</option>
+          </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-briefcase"></i></span>
+          <select class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" class="form-control" formControlName="workStatus" value="{{selectedUser?.workStatus }}" name="workStatus">
+            <option value="OFFICE" selected>Bureau</option>
+            <option value="HOLIDAY">Vacances</option>
+            <option value="SICK">Malade</option>
+            <option value="MISSION">Mission</option>
+            <option value="REMOTE">À distance</option>
+          </select>
+        </div>
+
+
+
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+          <textarea class="form-control"  class="form-control" formControlName="description" aria-label="With textarea" value="{{selectedUser?.description }}"></textarea>
+        </div>
+
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #6c5ce7; border-color: #6c5ce7; transition: background-color 0.3s, border-color 0.3s;" onmouseover="this.style.backgroundColor='#5a4bd8'; this.style.borderColor='#5a4bd8';" onmouseout="this.style.backgroundColor='#6c5ce7'; this.style.borderColor='#6c5ce7';">
+          Modifier
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .custom-header {
+    background-color: #686de0;
+  }
+  
+  .btn-close-white {
+    color: #fff;
+  }
+
+  .modal-body .row {
+    margin-bottom: 15px;
+  }
+
+  .custom-delete-icon {
+  color: #EA2027;
+  font-size: 2rem;
+}
+#close-confirm-button {
+  background-color: #EA2027;
+  border-color: #EA2027;
+}
+
+#delete-confirm-button {
+  background-color: #2d98da;
+  border-color: #2d98da;
+}
+
+#close-confirm-button:hover {
+  background-color: #c9181e;
+  border-color: #c9181e;
+}
+
+#delete-confirm-button:hover {
+  background-color: #1d7ea6;
+  border-color: #1d7ea6;
+}
+
+</style>

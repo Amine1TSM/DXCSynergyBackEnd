@@ -1,0 +1,48 @@
+.error-border {
+    border-color: red;
+  }
+  .custom-header {
+    background-color: #686de0;
+  }
+  
+  .btn-close-white {
+    color: #fff;
+  }
+
+  .modal-body .row {
+    margin-bottom: 15px;
+  }
+
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f1f2f6;
+    height: 80px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+  }
+
+  .bi-instagram {
+    font-size: 1.5rem;
+  }
+  
+  .bi-facebook {
+    font-size: 1.5rem;
+  }
+  
+  .bi-twitter-x {
+    font-size: 1.5rem;
+  }
+  
+  .bi-instagram:hover,
+  .bi-facebook:hover,
+  .bi-twitter-x:hover {
+    color: #706fd3;
+  }
+  
+  .nav > li {
+    margin-right: 30px;
+  }
+  
